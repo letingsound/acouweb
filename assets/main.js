@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
   }
 
-  // 表单处理
+  // 邮件咨询：预填邮件后由访客在邮件应用中确认发送
   const contactForm = document.querySelector("#contact-form");
   const statusEl = document.querySelector("#form-status");
 
@@ -59,9 +59,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      statusEl.textContent = "信息已收录，我们会在 1 个工作日内联系您。";
-      statusEl.className = "form-status success";
-      contactForm.reset();
+      const subject = encodeURIComponent(`网站咨询：${name}`);
+      const body = encodeURIComponent(
+        `您的称呼：${name}\r\n联系方式：${email}\r\n\r\n项目/需求说明：\r\n${message}`
+      );
+      statusEl.textContent = "请在打开的邮件应用中确认发送。若未打开，请复制以上内容，直接发邮件至 sales@letingsound.cn。";
+      statusEl.className = "form-status";
+      window.location.href = `mailto:sales@letingsound.cn?subject=${subject}&body=${body}`;
     });
   }
 
